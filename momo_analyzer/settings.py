@@ -1,10 +1,18 @@
 from pathlib import Path
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'your-secret-key'
+# ✅ Secret key hardcoded as requested (NOT recommended for production)
+SECRET_KEY = 'z1b7k8wd-eexbza7s&$_r4qwgkel5nw&o1&)pys!)bhc9d$$m('
+
 DEBUG = True
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    os.getenv('RENDER_EXTERNAL_HOSTNAME', 'airtime-checker.onrender.com')
+]
 
 INSTALLED_APPS = [
     'analyzer',
