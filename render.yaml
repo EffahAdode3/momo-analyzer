@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: airtime-checker
+    runtime: python
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py migrate
+    startCommand: gunicorn momo_analyzer.wsgi:application --bind 0.0.0.0:$PORT
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: momo_analyzer.settings
