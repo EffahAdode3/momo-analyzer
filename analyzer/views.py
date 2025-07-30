@@ -55,11 +55,13 @@ def upload_view(request):
                 return render(request, "analyzer/upload.html", {"form": form, "error": "No valid transactions found."})
             summary, airtime = summarize(df)
             table_data = df.to_dict(orient="records")
-            request.session['csv'] = df.to_csv(index=False)
+            # Store CSV data in a hidden form field instead of session
+            csv_data = df.to_csv(index=False)
             return render(request, "analyzer/result.html", {
                 "summary": summary,
                 "airtime": airtime,
-                "table": table_data
+                "table": table_data,
+                "csv_data": csv_data
             })
     else:
         form = UploadPDFForm()
@@ -67,7 +69,9 @@ def upload_view(request):
 
 # CSV export view
 def download_csv(request):
-    csv = request.session.get('csv', '')
-    response = HttpResponse(csv, content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="momo_transactions.csv"'
-    return response
+    if request.method == "POST":
+        csv_data = request.POST.get('csv_data', '')
+        response = HttpResponse(csv_data, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="momo_transactions.csv"'
+        return response
+    return HttpResponse("No CSV data available", status=400)

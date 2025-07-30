@@ -64,8 +64,12 @@
         </tbody>
     </table>
 
-    <!-- Download CSV -->
-    <a href="{% url 'download_csv' %}" class="btn btn-success mt-3">⬇ Download CSV</a>
+    <!-- Download CSV Form -->
+    <form method="post" action="{% url 'download_csv' %}" style="display: inline;">
+        {% csrf_token %}
+        <input type="hidden" name="csv_data" value="{{ csv_data }}">
+        <button type="submit" class="btn btn-success mt-3">⬇ Download CSV</button>
+    </form>
 </div>
 </body>
 </html>
