@@ -1,23 +1,60 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Upload MoMo Statement</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
-<div class="container mt-5">
-    <div class="card shadow-sm p-4">
-        <h2 class="mb-3 text-center">📄 Upload Your MoMo Statement</h2>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button class="btn btn-primary">Analyze</button>
-        </form>
-        {% if error %}
-            <div class="alert alert-danger mt-3">{{ error }}</div>
-        {% endif %}
+{% extends 'analyzer/base.html' %}
+{% block title %}Upload MoMo Statement{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
+                        <h2 class="mb-3">📄 Upload Your MoMo Statement</h2>
+                        <p class="text-muted">Select your Mobile Money statement PDF file to get started with the analysis</p>
+                    </div>
+                    
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label for="id_file" class="form-label fw-bold">
+                                <i class="fas fa-file-pdf me-2 text-danger"></i>Choose PDF File
+                            </label>
+                            <div class="input-group">
+                                {{ form.file }}
+                                <button class="btn btn-outline-secondary" type="button">
+                                    <i class="fas fa-folder-open"></i>
+                                </button>
+                            </div>
+                            <div class="form-text">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Supported format: PDF files only. Maximum size: 10MB
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button class="btn btn-primary-custom btn-lg">
+                                <i class="fas fa-chart-line me-2"></i>Analyze Statement
+                            </button>
+                        </div>
+                    </form>
+                    
+                    {% if error %}
+                        <div class="alert alert-danger mt-4" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            {{ error }}
+                        </div>
+                    {% endif %}
+                    
+                    <div class="mt-4 p-3 bg-light rounded">
+                        <h6 class="mb-2"><i class="fas fa-lightbulb me-2 text-warning"></i>Pro Tips:</h6>
+                        <ul class="mb-0 small text-muted">
+                            <li>Make sure your PDF is clear and readable</li>
+                            <li>Ensure the statement contains transaction details</li>
+                            <li>For best results, use statements from the last 12 months</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-</body>
-</html>
+{% endblock %}
